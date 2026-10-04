@@ -10,16 +10,17 @@ from datetime import datetime
 
 STUDY_START = datetime(2020, 2, 1)
 STUDY_END = datetime(2020, 3, 31, 23, 59, 59)
+CALORIE_ESTIMATE_SCALE = 2.1156
 
 # ==========================================
 # 1. Heuristic estimation (time -> calories)
 # ==========================================
 def estimate_meal_from_time(dt):
     """
-    Estimate the meal category and calorie range based on the photo timestamp.
+    Estimate a meal category and scaled calorie value from the photo timestamp.
     """
     if dt is None:
-        return 500, "Repas"
+        return round(500 * CALORIE_ESTIMATE_SCALE), "Repas"
     
     hour = dt.hour
     
@@ -40,7 +41,7 @@ def estimate_meal_from_time(dt):
         kcal = random.randint(150, 350)
         description = "Collation / Encas"
         
-    return kcal, description
+    return round(kcal * CALORIE_ESTIMATE_SCALE), description
 
 # ==========================================
 # 2. EXIF metadata
@@ -119,4 +120,3 @@ if __name__ == "__main__":
         print(df_food.head(10))
     else:
         print("❌ Aucune image trouvée.")
-

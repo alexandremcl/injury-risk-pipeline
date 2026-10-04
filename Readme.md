@@ -9,8 +9,8 @@ The main pipeline runs the following stages in order:
 1. **`1_nutrition.py` — meal-photo processing**
    - Reads photo timestamps from EXIF metadata, falling back to the file modification time.
    - Keeps photos dated from February 1 through March 31, 2020.
-   - Assigns a meal period based on the time of day and estimates calories using a heuristic range.
-   - It does not recognize food from image content; calorie values are rough estimates, not nutritional measurements.
+   - Assigns a meal period based on the time of day and estimates calories using a heuristic range, scaled to target about 3,500 kcal per participant-day on the current study dataset.
+   - It does not recognize food from image content; calorie values are rough estimates, not nutritional measurements or individual recommendations.
 2. **`2_merge_dataset.py` — daily data merging**
    - Aggregates nutrition photos, Fitbit data, PMSYS wellness/training/injury data, and Google Docs self-reports by participant and date.
    - Writes `data/processed/global_daily_dataset.csv`.
@@ -31,7 +31,7 @@ The main pipeline runs the following stages in order:
 - **`performance_index`** is a hand-designed 0–100 composite based on available readiness, sleep quality and duration, mood, fatigue, and soreness values. Higher fatigue and soreness reduce the score; a sleep duration near eight hours increases it.
 - **`performance_index_next_day`** is the performance index on the participant's next recorded row. If a calendar date is missing, that row may not represent the next calendar day. The regressor learns to predict this target.
 
-These are exploratory targets and should not be interpreted as validated medical or athletic-performance measures. Model metrics depend on the small study dataset and cannot be assumed to generalize.
+These are exploratory targets and should not be interpreted as validated medical or athletic-performance measures. The 3,500 kcal/day calibration is a rough dataset-level adjustment based on the requested general athlete range; it is not inferred from participant physiology, and model metrics depend on the small study dataset and cannot be assumed to generalize.
 
 ## Project structure
 
